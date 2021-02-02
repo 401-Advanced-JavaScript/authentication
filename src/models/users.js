@@ -9,15 +9,15 @@ const SECRET = 'NoBodyKnow';
 
 
 users.save = async function (data) {
-    if (!db[data.username]) {
-        data.password = await bcrypt.hash(data.password, 5)
-        await model.create(data)
-        db[data.username] = data
-        return data
-    } else {
-        console.log('username is taken')
-        return Promise.reject()
-    }
+    // if (!db[data.username]) {
+    data.password = await bcrypt.hash(data.password, 5)
+    await model.create(data)
+    db[data.username] = data
+    return data
+    // } else {
+    //     console.log('username is taken')
+    //     return Promise.reject()
+    // }
 }
 
 users.generateToken = async function (data) {
@@ -38,6 +38,12 @@ users.comparePassword = async function (username, pass) {
     } else {
         return Promise.reject()
     }
+
+}
+users.authenticateToken = async function (token) {
+    let username = jwt.verify(token, SECRET);
+    return await model.read(username)
+
 
 }
 users.list = async () => {

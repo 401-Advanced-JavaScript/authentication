@@ -48,7 +48,6 @@ module.exports = async function handler(req, res, next) {
     let githubtoken = await getToken(code)
     let githubData = await getData(githubtoken)
     let modifiedUserData = await saveAndGet(githubData);
-    console.log('modifiedUserData :', modifiedUserData);
     let token = modifiedUserData[0]
     let user = modifiedUserData[1]
     req.token = token
