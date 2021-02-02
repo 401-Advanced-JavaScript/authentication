@@ -6,7 +6,7 @@ const URI = 'mongodb+srv://Mohammed:123456Jj@cluster0.alumx.mongodb.net/clusterz
 const URI2 = 'mongodb://localhost:27017/authey'
 
 
-mongoose.connect(URI2, {
+mongoose.connect(URI, {
     useCreateIndex: true,
     useFindAndModify: false,
     useNewUrlParser: true,

@@ -5,6 +5,7 @@ const app = express()
 app.use(express.json())
 const user = require('../models/users')
 const auth = require('../authentication/basic-auth')
+const oAuth = require('../authentication/oAuth')
 
 
 
@@ -26,6 +27,10 @@ function signIn(req, res) {
 
     res.status(200).send(req.me)
 }
+
+app.get('/oauth', oAuth, (req, res) => {
+    res.status(200).send(req.user)
+})
 
 
 app.get('/showusers', showUsers)
