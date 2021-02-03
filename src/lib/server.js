@@ -7,6 +7,7 @@ const user = require('../models/users')
 const auth = require('../authentication/basic-auth')
 const oAuth = require('../authentication/oAuth')
 const bearer = require('../authentication/bearer')
+const acl = require('../authentication/acl')
 
 app.engine('html', require('ejs').renderFile);
 app.post('/signup', signUp)
@@ -27,7 +28,6 @@ function signIn(req, res) {
 }
 
 app.get('/oauth', oAuth, (req, res) => {
-    // res.status(200).redirect('http://localhost:3000/user')
     res.status(200).send(req.user)
 })
 
@@ -41,6 +41,54 @@ app.get('/profile', bearer, (req, res) => {
 });
 
 
+
+
+
+
+
+
+
+app.get('/read', bearer, acl('read'), (req, res) => {
+    try {
+        res.status(200).json({ message: 'Route /read worked', user: req.user })
+    } catch (e) {
+        res.status(403).json('Forbidden: Invalid credentials');
+    }
+})
+app.post('/add', bearer, acl('create'), (req, res) => {
+    try {
+        res.status(200).json({ message: 'Route /add worked', user: req.user })
+    } catch (e) {
+        res.status(403).json('Forbidden: Invalid credentials');
+    }
+})
+app.put('/change', bearer, acl('update'), (req, res) => {
+    try {
+        res.status(200).json({ message: 'Route /change worked', user: req.user })
+    } catch (e) {
+        res.status(403).json('Forbidden: Invalid credentials');
+    }
+})
+app.delete('/remove', bearer, acl('delete'), (req, res) => {
+    try {
+        res.status(200).json({ message: 'Route /delete worked', user: req.user })
+    } catch (e) {
+        res.status(403).json('Forbidden: Invalid credentials');
+    }
+})
+
+
+
+
+
+
+
+
+
+
+
+
+
 app.get('/showusers', showUsers)
 function showUsers(req, res) {
     return user.list()
@@ -48,24 +96,6 @@ function showUsers(req, res) {
             res.status(200).json(data)
         })
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 module.exports = {
     server: app,
     start: port => {

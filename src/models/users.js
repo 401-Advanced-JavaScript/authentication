@@ -50,6 +50,20 @@ users.list = async () => {
     return await model.read()
 }
 
+users.can = async function (role, action) {
+    const actions = {
+        'admin': ['read', 'create', 'update', 'delete'],
+        'editor': ['read', 'update'],
+        'writer': ['read', 'create'],
+        'user': ['read'],
+    };
+    if (actions[role].includes(action)) {
+        return true;
+    } return false;
+}
+
+
+
 
 module.exports = users
 
