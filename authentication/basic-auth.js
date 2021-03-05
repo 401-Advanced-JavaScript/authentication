@@ -14,7 +14,6 @@ module.exports = async (req, res, next) => {
     users.comparePassword(user, password)
 
         .then(data => {
-            console.log('data :', data);
             return users.generateToken(data)
         })
         .then(data => {
